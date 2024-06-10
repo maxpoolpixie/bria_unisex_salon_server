@@ -6,6 +6,6 @@ const bookingController = require("../controller/bookingController");
 
 router.post("/addBooking", bookingController.addBooking)
 router.get("/getAllBooking", bookingController.getAllBooking);
-router.get("/getRecentOffer", bookingController.getRecentBooking);
+router.get("/getRecentBooking", bookingController.getRecentBooking);
 
 module.exports = router;
