@@ -4,15 +4,21 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express()
+const fetch = require('node-fetch');
+const cron = require('node-cron');
 const port = process.env.PORT || 5000;
 const db_name = process.env.DB_NAME;
 const password = process.env.DB_PASSWORD;
 
+
 // middleware connection
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+// Increase the limit for bodyParser
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Connect to MongoDB
 mongoose.connect(`mongodb+srv://${db_name}:${password}@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, { useNewUrlParser: true, useUnifiedTopology: true });

@@ -6,7 +6,7 @@ const User = require("../model/userSchema");
 const Service = require("../model/serviceSchema");
 
 // requiring utilities function
-const { formatDate, formatTime } = require("../utils/bookingUtilities")
+const { formatDate, formatTime, scheduleReminder, sendWhatsAppMessage } = require("../utils/bookingUtilities")
 
 
 const bookingController = {
@@ -64,6 +64,10 @@ const bookingController = {
             if (newRepeatations > 1) {
                 await User.findOneAndUpdate({ name, phoneNumber }, { isRepeat: true }, { new: true })
             }
+
+            // to send whatsapp message
+            const appointment = { name, phoneNumber, service, date, time }
+            scheduleReminder(appointment);
 
             res.json({ message: "booking confirmed", success: true, bookingAdded })
 
