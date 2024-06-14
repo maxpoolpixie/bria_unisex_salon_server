@@ -59,7 +59,7 @@ const serviceController = {
     getParticularServiceById: async (req, res) => {
         try {
             const { id } = req.params;
-            const serviceDetails = await Service({ _id: id });
+            const serviceDetails = await Service.find({ _id: id });
             if (!serviceDetails) {
                 return res.json({ message: "service is missing" })
             }
