@@ -12,7 +12,15 @@ const password = process.env.DB_PASSWORD;
 
 
 // middleware connection
-app.use(cors());
+// Configure CORS
+const corsOptions = {
+    origin: 'http://your-frontend-domain.com', // replace with your front-end URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Enable this if you need to send cookies with CORS requests
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
