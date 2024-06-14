@@ -14,10 +14,13 @@ const password = process.env.DB_PASSWORD;
 // middleware connection
 // Configure CORS
 const corsOptions = {
-    origin: 'http://your-frontend-domain.com', // replace with your front-end URL
+    origin: function (origin, callback) {
+        console.log('Origin:', origin); // Log the origin for debugging
+        callback(null, true); // Allow all origins
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // Enable this if you need to send cookies with CORS requests
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
