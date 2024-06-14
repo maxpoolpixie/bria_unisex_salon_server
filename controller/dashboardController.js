@@ -62,8 +62,8 @@ const dashboardController = {
             console.log( lastThirtyDaysRevenue)
 
             // Calculate deviations
-            const revenueDeviation = (lastThirtyDaysRevenue / totalRevenue) * 100;
-            const bookingDeviation = (lastThirtyDaysBookingCount / totalBookings) * 100;
+            const revenueDeviation = parseFloat(((lastThirtyDaysRevenue / totalRevenue) * 100).toFixed(2));
+            const bookingDeviation = parseFloat(((lastThirtyDaysBookingCount / totalBookings) * 100).toFixed(2));
             const recentBookingCountDeviation = (recentBookingCount / lastThirtyDaysBookingCount) * 100;
 
             res.json({
