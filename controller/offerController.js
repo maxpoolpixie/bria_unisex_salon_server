@@ -1,5 +1,6 @@
 const Offer = require("../model/offerSchema");
 
+
 const offerController = {
     addOffer: async (req, res) => {
         const { offerName, offerImg, startDate, endDate, usageLimit } = req.body;

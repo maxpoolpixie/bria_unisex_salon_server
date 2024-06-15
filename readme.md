@@ -147,3 +147,20 @@ endpoint: '/user/getFrequentlyUser' <br>
 getDashboardData <br>
 method: get <br>
 endpoint: '/dashboard/getDashboardData' <br>
+
+
+
+fetch("localhosthjgkjjgjhgjhghjhgj/service/addService",{
+    method: "POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.Stringify({serviceName, serviceDescription, img, price, category, serviceType})
+} )
+.then(res=>res.json())
+.then(data=>console.log(data))
+
+post
+put
+get
+delete

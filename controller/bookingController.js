@@ -18,11 +18,12 @@ const bookingController = {
             if (!(name && phoneNumber && service && date)) {
                 return res.json({ message: "Please fillup all the field" })
             }
+            
 
             const confirmationCode = uid(6);
             const booking = new Booking({ name, phoneNumber, service, date, time, confirmationCode })
             const bookingAdded = await booking.save();
-
+            
             if (!bookingAdded) {
                 return res.json({ error: "booking incomplete. Please try again" })
             }
@@ -35,7 +36,7 @@ const bookingController = {
 
 
             const user = await User.findOne({ name, phoneNumber });
-
+            console.log(user)
             const { howMuchRepeat } = user;
             const newRepeatations = howMuchRepeat + 1;
 
@@ -109,7 +110,6 @@ const bookingController = {
             res.json({ message: "something went wrong", error });
         }
     }
-
 }
 
 module.exports = bookingController;
