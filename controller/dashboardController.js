@@ -56,10 +56,10 @@ const dashboardController = {
 
             for (const iterator of serviceListOfLastThirtyDays) {
                 console.log(iterator)
-                 lastThirtyDaysRevenue = lastThirtyDaysRevenue + iterator.servicePrice;
+                lastThirtyDaysRevenue = lastThirtyDaysRevenue + iterator.servicePrice;
             }
 
-            console.log( lastThirtyDaysRevenue)
+            console.log(lastThirtyDaysRevenue)
 
             // Calculate deviations
             const revenueDeviation = parseFloat(((lastThirtyDaysRevenue / totalRevenue) * 100).toFixed(2));
@@ -77,6 +77,34 @@ const dashboardController = {
 
         } catch (error) {
             res.json({ errorMessage: "something went wrong", error });
+        }
+    },
+    getGraphData: async (req, res) => {
+        try {
+            const allUser = await User.find();
+            const allBooking = await Booking.find();
+
+            let graphData = [];
+
+
+            for (const bookingIterator of allBooking) {
+                const { phoneNumber, name } = bookingIterator;
+                let graphObj = {};
+
+                const findingParticularUser = allUser.find(user => user.phoneNumber == phoneNumber)
+                const { isRepeat } = findingParticularUser;
+                bookingIterator.isRepeat = isRepeat;
+                
+                graphObj.isRepeat = isRepeat;
+                graphObj.date = bookingIterator.date;
+                graphObj.time = bookingIterator.time;
+
+                graphData.push(graphObj)
+
+            }
+            res.json(graphData)
+        } catch (error) {
+            res.json({ success: false, message: "something went wrong", error })
         }
     }
 }

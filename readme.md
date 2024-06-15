@@ -48,6 +48,8 @@ method: put <br>
 body: { serviceName, serviceDescription, img, price, category, serviceType } <br>
 endpoint: '/service/editService/:id' <br>
 
+
+
 * Booking
 ------------------------------------
 1. addBooking <br>
@@ -87,6 +89,8 @@ endpoint: '/booking/getAllBooking' <br>
 3. getRecentBooking <br>
 method: get <br>
 endpoint: '/booking/getRecentBooking' <br>
+
+
 
 * Offer
 -------------------------------------
@@ -149,18 +153,3 @@ method: get <br>
 endpoint: '/dashboard/getDashboardData' <br>
 
 
-
-fetch("localhosthjgkjjgjhgjhghjhgj/service/addService",{
-    method: "POST",
-    headers:{
-        "Content-Type":"application/json"
-    },
-    body:JSON.Stringify({serviceName, serviceDescription, img, price, category, serviceType})
-} )
-.then(res=>res.json())
-.then(data=>console.log(data))
-
-post
-put
-get
-delete
