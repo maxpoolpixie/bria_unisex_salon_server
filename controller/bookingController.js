@@ -1,12 +1,25 @@
-const { uid } = require("uid")
+const { uid } = require("uid");
+const fetch = require('node-fetch');
+const cron = require('node-cron');
 
 // requiring Model
 const Booking = require("../model/bookingSchema");
 const User = require("../model/userSchema");
 const Service = require("../model/serviceSchema");
 
-// requiring utilities function
-const { formatDate, formatTime, scheduleReminder, sendWhatsAppMessage } = require("../utils/bookingUtilities")
+
+function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+}
+
+function formatTime(date) {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
 
 
 const bookingController = {
@@ -14,66 +27,61 @@ const bookingController = {
         try {
             const { name, phoneNumber, service, date, time } = req.body;
 
-            // verifying all the field's existance
-            if (!(name && phoneNumber && service && date)) {
-                return res.json({ message: "Please fillup all the field" })
+            // verifying all the field's existence
+            if (!(name && phoneNumber && service && date && time)) {
+                return res.json({ message: "Please fill up all the fields" });
             }
-            
 
             const confirmationCode = uid(6);
-            const booking = new Booking({ name, phoneNumber, service, date, time, confirmationCode })
+            const booking = new Booking({ name, phoneNumber, service, date, time, confirmationCode });
             const bookingAdded = await booking.save();
-            
+
             if (!bookingAdded) {
-                return res.json({ error: "booking incomplete. Please try again" })
+                return res.json({ error: "Booking incomplete. Please try again" });
             }
 
             const userAlreadyExist = await User.findOne({ name, phoneNumber });
             if (!userAlreadyExist) {
-                const creatingUser = new User({ name, phoneNumber })
+                const creatingUser = new User({ name, phoneNumber });
                 await creatingUser.save();
             }
 
-
             const user = await User.findOne({ name, phoneNumber });
-            console.log(user)
             const { howMuchRepeat } = user;
-            const newRepeatations = howMuchRepeat + 1;
+            const newRepetitions = howMuchRepeat + 1;
 
             const bookingDate = formatDate(new Date());
             const bookingTime = formatTime(new Date());
 
-            const lastAppearenceDate = {
+            const lastAppearanceDate = {
                 date: bookingDate,
                 time: bookingTime
-            }
+            };
 
             let totalSpentByUser = user.totalSpent;
 
             for (const iterator of service) {
-                const servicedetails = await Service.findOne({ serviceName: iterator.serviceName });
-                const { bookingCount } = servicedetails;
+                const serviceDetails = await Service.findOne({ serviceName: iterator.serviceName });
+                const { bookingCount } = serviceDetails;
                 const { servicePrice } = iterator;
 
                 const updatedBookingCount = bookingCount + 1;
-                totalSpentByUser = totalSpentByUser + servicePrice;
+                totalSpentByUser += servicePrice;
 
-                await Service.findOneAndUpdate({ serviceName: iterator.serviceName }, { bookingCount: updatedBookingCount }, { new: true })
+                await Service.findOneAndUpdate({ serviceName: iterator.serviceName }, { bookingCount: updatedBookingCount }, { new: true });
             }
 
-            await User.findOneAndUpdate({ name, phoneNumber }, { howMuchRepeat: newRepeatations, lastAppearenceDate: lastAppearenceDate, totalSpent: totalSpentByUser }, { new: true })
-            if (newRepeatations > 1) {
-                await User.findOneAndUpdate({ name, phoneNumber }, { isRepeat: true }, { new: true })
+            await User.findOneAndUpdate({ name, phoneNumber }, { howMuchRepeat: newRepetitions, lastAppearanceDate, totalSpent: totalSpentByUser }, { new: true });
+            if (newRepetitions > 1) {
+                await User.findOneAndUpdate({ name, phoneNumber }, { isRepeat: true }, { new: true });
             }
 
-            // to send whatsapp message
-            const appointment = { name, phoneNumber, service, date, time }
-            scheduleReminder(appointment);
-
-            res.json({ message: "booking confirmed", success: true, bookingAdded })
+        
+            res.json({ message: "Booking confirmed", success: true, bookingAdded });
 
         } catch (error) {
-            res.json({ errorMessage: "something went wrong", error })
+            console.error('Error in addBooking:', error);
+            res.json({ errorMessage: "Something went wrong", error: error.message });
         }
     },
     getAllBooking: async (req, res) => {
@@ -99,7 +107,8 @@ const bookingController = {
                 bookings: bookingList
             });
         } catch (error) {
-            res.json({ errorMessage: "Something went wrong", error });
+            console.error('Error in getAllBooking:', error);
+            res.json({ errorMessage: "Something went wrong", error: error.message });
         }
     },
     getRecentBooking: async (req, res) => {
@@ -107,9 +116,10 @@ const bookingController = {
             const allBooking = await Booking.find().sort({ date: -1, time: -1 });
             res.json(allBooking);
         } catch (error) {
-            res.json({ message: "something went wrong", error });
+            console.error('Error in getRecentBooking:', error);
+            res.json({ message: "something went wrong", error: error.message });
         }
     }
-}
+};
 
 module.exports = bookingController;

@@ -59,13 +59,13 @@ const dashboardController = {
                 lastThirtyDaysRevenue = lastThirtyDaysRevenue + iterator.servicePrice;
             }
 
-            console.log(lastThirtyDaysRevenue)
+        
 
             // Calculate deviations
             const revenueDeviation = parseFloat(((lastThirtyDaysRevenue / totalRevenue) * 100).toFixed(2)) || 0;
             const bookingDeviation = parseFloat(((lastThirtyDaysBookingCount / totalBookings) * 100).toFixed(2)) || 0;
             const recentBookingCountDeviation = (recentBookingCount / lastThirtyDaysBookingCount) * 100 || 0;
-
+            // console.log("Total reveneue---------------------------------------------------------",totalRevenue)
             res.json({
                 totalRevenue,
                 totalBookings,
@@ -94,7 +94,7 @@ const dashboardController = {
                 const findingParticularUser = allUser.find(user => user.phoneNumber == phoneNumber)
                 const { isRepeat } = findingParticularUser;
                 bookingIterator.isRepeat = isRepeat;
-                
+
                 graphObj.isRepeat = isRepeat;
                 graphObj.date = bookingIterator.date;
                 graphObj.time = bookingIterator.time;

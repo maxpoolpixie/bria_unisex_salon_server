@@ -19,10 +19,12 @@ const bookingSchema = mongoose.Schema({
         }
     }],
     date: {
-        type: String
+        type: String,
+        index: true
     },
     time: {
-        type: String
+        type: String,
+        index:true
     },
     confirmationCode: {
         type: String

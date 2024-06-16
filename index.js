@@ -31,14 +31,38 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
+const {scheduleReminder} = require("./cronjob");
+
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // Increase this to a higher value
+    socketTimeoutMS: 45000,        // Increase this to a higher value
+};
+
 // Connect to MongoDB
-mongoose.connect(`mongodb+srv://${db_name}:${password}@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(`mongodb+srv://${db_name}:${password}@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log('Connected to MongoDB');
+
+    // Schedule the cron job to run every 5 minutes after MongoDB is connected
+    cron.schedule('* * * * *', scheduleReminder);
 });
+
+const connectWithRetry = () => {
+    console.log('MongoDB connection with retry');
+    mongoose.connect(`mongodb+srv://${db_name}:${password}@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options).then(() => {
+        console.log('MongoDB is connected');
+    }).catch(err => {
+        console.log('MongoDB connection unsuccessful, retry after 5 seconds.');
+        setTimeout(connectWithRetry, 5000);
+    });
+};
+
+connectWithRetry();
 
 app.get("/", async (req, res) => {
     try {
