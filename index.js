@@ -80,6 +80,7 @@ const offer = require("./router/offer");
 const service = require("./router/service");
 const user = require("./router/user");
 const dashboard = require("./router/dashboard")
+const adminLogin = require("./router/admin")
 
 // middleware connection
 app.use("/user", user);
@@ -87,6 +88,7 @@ app.use("/service", service);
 app.use("/offer", offer);
 app.use("/booking", booking);
 app.use("/dashboard", dashboard);
+app.use("/adminLogin", adminLogin);
 
 // Error handling middleware
 app.use(function (err, req, res, next) {
