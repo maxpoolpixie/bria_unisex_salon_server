@@ -1,30 +1,32 @@
 const fetch = require('node-fetch');
 
 // Function to send WhatsApp message
- const sendWhatsAppMessage = async (phoneNumber, templateName, bodyValues) => {
+const sendWhatsAppMessage = async (phoneNumber, templateName, bodyValues) => {
     try {
+        console.log(phoneNumber, templateName, bodyValues)
         const response = await fetch("https://server.gallabox.com/devapi/messages/whatsapp", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'apiKey': '666dfa36dbe596a3dc9eb8d4',
-                'apiSecret': "8542dd9393904e95a555bc31823fffec"
+                'apiKey': '66796b85679dab2b70d1c3d8',
+                'apiSecret': "ab5a4f06a3334bedbc14fee39e2359ad"
             },
-            body: JSON.stringify({
-                "channelId": "666a90cf71cbba99d3770b7d",
-                "channelType": "whatsapp",
-                "recipient": {
-                    "name": "shafinahnam89",
-                    "phone": phoneNumber
-                },
-                "whatsapp": {
-                    "type": "template",
-                    "template": {
-                        "templateName": templateName,
-                        "bodyValues": bodyValues
+            body: JSON.stringify(
+                {
+                    "channelId": "66743aaae9db57dbcb217bef",
+                    "channelType": "whatsapp",
+                    "recipient": {
+                        "name": "shafinahnam89",
+                        "phone": phoneNumber
+                    },
+                    "whatsapp": {
+                        "type": "template",
+                        "template": {
+                            "templateName": "reminder_message"
+                        }
                     }
                 }
-            })
+            )
         });
 
         const data = await response.json();
@@ -34,4 +36,4 @@ const fetch = require('node-fetch');
     }
 };
 
-module.exports = {sendWhatsAppMessage}
+module.exports = { sendWhatsAppMessage }

@@ -24,11 +24,12 @@ const bookingSchema = mongoose.Schema({
     },
     time: {
         type: String,
-        index:true
+        index: true
     },
     confirmationCode: {
         type: String
-    }
+    },
+    reminderMessageSend: Boolean
 })
 
 const Booking = new mongoose.model("Booking", bookingSchema);

@@ -36,8 +36,8 @@ const {scheduleReminder} = require("./cronjob");
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 30000, // Increase this to a higher value
-    socketTimeoutMS: 45000,        // Increase this to a higher value
+    serverSelectionTimeoutMS: 60000, // Increase this to a higher value
+    socketTimeoutMS: 60000,        // Increase this to a higher value
 };
 
 // Connect to MongoDB
@@ -71,6 +71,8 @@ app.get("/", async (req, res) => {
         res.json(error)
     }
 })
+
+
 
 // router import
 const booking = require("./router/booking");
