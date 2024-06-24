@@ -33,7 +33,7 @@ const bookingController = {
             }
 
             const confirmationCode = uid(6);
-            const booking = new Booking({ name, phoneNumber, service, date, time, confirmationCode });
+            const booking = new Booking({ name, phoneNumber: phoneNumber.slice(1), service, date, time, confirmationCode });
             const bookingAdded = await booking.save();
 
             if (!bookingAdded) {
