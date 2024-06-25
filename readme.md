@@ -155,17 +155,19 @@ endpoint: '/dashboard/getDashboardData' <br>
 
 
 
-* Admin login
+* Admin login <br>
 ---------------------
-method: POST
-endpoint: "/adminLogin/adminLogin"
-req.body: {email, password}
-you will get return {success:true} or {success: false}.
-Based on true/false you will redirect the useer to dashboard or login page
+method: POST <br>
+endpoint: "/adminLogin/adminLogin" <br>
+req.body: {email, password} <br>
+you will get return {success:true} or {success: false}. <br>
+Based on true/false you will redirect the useer to dashboard or login page <br>
+<br>
+<br>
+<br>
+<br>
+email: admin@gmail.com <br>
+password: 12345678 <br>
 
-
-email: admin@gmail.com
-password: 12345678
-
-
+<br>
 ========================Thanks===========================
