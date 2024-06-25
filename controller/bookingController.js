@@ -76,7 +76,7 @@ const bookingController = {
                 await User.findOneAndUpdate({ name, phoneNumber }, { isRepeat: true }, { new: true });
             }
 
-        
+
             res.json({ message: "Booking confirmed", success: true, bookingAdded });
 
         } catch (error) {
@@ -118,6 +118,18 @@ const bookingController = {
         } catch (error) {
             console.error('Error in getRecentBooking:', error);
             res.json({ message: "something went wrong", error: error.message });
+        }
+    },
+    getParticularBooking: async (req, res) => {
+        try {
+            const { phoneNumber } = req.params;
+            const getParticularBooking = await Booking.findOne({ phoneNumber: phoneNumber });
+            if (!getParticularBooking) {
+                return res.json({ success: false, message: "booking data is missing in database" })
+            }
+            res.json({ success: true, getParticularBooking })
+        } catch (error) {
+            res.json({ success: false })
         }
     }
 };
