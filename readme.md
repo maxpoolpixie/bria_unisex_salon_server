@@ -90,6 +90,10 @@ endpoint: '/booking/getAllBooking' <br>
 method: get <br>
 endpoint: '/booking/getRecentBooking' <br>
 
+4. getParticularBooking <br>
+method: get <br>
+endpoint: '/booking/getParticularBooking/:phoneNumber' <br>
+
 
 
 * Offer
