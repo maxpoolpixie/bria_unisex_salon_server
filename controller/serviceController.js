@@ -7,9 +7,11 @@ const Service = require('../model/serviceSchema');
 const storage = multer.diskStorage({
     destination: './uploads/',
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}${path.extname(file.originalname)}`);
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
+
+
 
 const upload = multer({
     storage: storage,
@@ -27,6 +29,8 @@ const upload = multer({
     }
 }).single('img');
 
+
+
 const serviceController = {
     addService: async (req, res) => {
         upload(req, res, async (err) => {
@@ -36,11 +40,12 @@ const serviceController = {
             try {
                 const { serviceName, serviceDescription, price, category, serviceType } = req.body;
                 const img = req.file ? req.file.filename : '';
+                const imgUrl = req.file ? `http://localhost:8000/uploads/${img}` : '';
 
                 const newService = new Service({
                     serviceName,
                     serviceDescription,
-                    img,
+                    img: imgUrl,
                     price,
                     category,
                     serviceType
@@ -119,9 +124,10 @@ const serviceController = {
                 const { id } = req.params;
                 const { serviceName, serviceDescription, price, category, serviceType } = req.body;
                 const img = req.file ? req.file.filename : '';
+                const imgUrl = req.file ? `http://localhost:8000/uploads/${img}` : '';
 
                 const updatedFields = { serviceName, serviceDescription, price, category, serviceType };
-                if (img) updatedFields.img = img;
+                if (img) updatedFields.img = imgUrl;
 
                 const edited = await Service.findByIdAndUpdate(id, updatedFields, { new: true });
 

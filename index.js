@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express()
+const path = require('path');
 const fetch = require('node-fetch');
 const cron = require('node-cron');
 const port = process.env.PORT || 8000;
@@ -26,6 +27,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Serve static files from the "uploads" directory
+app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 
 // Increase the limit for bodyParser
 app.use(bodyParser.json({ limit: '50mb' }));

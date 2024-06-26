@@ -1,6 +1,8 @@
 const Offer = require("../model/offerSchema");
 const multer = require('multer');
 const path = require('path');
+const express = require('express');
+const app = express();
 
 // Set up multer for file storage
 const storage = multer.diskStorage({
@@ -26,6 +28,7 @@ const upload = multer({
     }
 }).single('offerImg');
 
+
 const offerController = {
     addOffer: async (req, res) => {
         upload(req, res, async (err) => {
@@ -35,13 +38,14 @@ const offerController = {
             try {
                 const { offerName, startDate, endDate, usageLimit } = req.body;
                 const offerImg = req.file ? req.file.filename : '';
+                const offerImgUrl = req.file ? `http://localhost:8000/uploads/${offerImg}` : '';
 
-                const newOffer = new Offer({ 
-                    offerName, 
-                    offerImg, 
-                    startDate, 
-                    endDate, 
-                    usageLimit 
+                const newOffer = new Offer({
+                    offerName,
+                    offerImg: offerImgUrl,
+                    startDate,
+                    endDate,
+                    usageLimit
                 });
 
                 const addedOffer = await newOffer.save();
@@ -102,9 +106,10 @@ const offerController = {
                 const { id } = req.params;
                 const { offerName, startDate, endDate, usageLimit, status } = req.body;
                 const offerImg = req.file ? req.file.filename : '';
+                const offerImgUrl = req.file ? `http://localhost:8000/uploads/${offerImg}` : '';
 
                 const updatedFields = { offerName, startDate, endDate, usageLimit, status };
-                if (offerImg) updatedFields.offerImg = offerImg;
+                if (offerImg) updatedFields.offerImg = offerImgUrl;
 
                 const editedOffer = await Offer.findByIdAndUpdate(id, updatedFields, { new: true });
 
