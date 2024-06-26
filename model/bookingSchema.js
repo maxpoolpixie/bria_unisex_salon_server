@@ -13,9 +13,6 @@ const bookingSchema = mongoose.Schema({
         },
         servicePrice: {
             type: Number,
-        },
-        serviceImg: {
-            type: String
         }
     }],
     date: {
