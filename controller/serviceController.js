@@ -40,7 +40,7 @@ const serviceController = {
             try {
                 const { serviceName, serviceDescription, price, category, serviceType } = req.body;
                 const img = req.file ? req.file.filename : '';
-                const imgUrl = req.file ? `http://localhost:8000/uploads/${img}` : '';
+                const imgUrl = req.file ? `https://bria-unisex-salon-server-1r2b.vercel.app/uploads/${img}` : '';
 
                 const newService = new Service({
                     serviceName,
@@ -124,7 +124,7 @@ const serviceController = {
                 const { id } = req.params;
                 const { serviceName, serviceDescription, price, category, serviceType } = req.body;
                 const img = req.file ? req.file.filename : '';
-                const imgUrl = req.file ? `http://localhost:8000/uploads/${img}` : '';
+                const imgUrl = req.file ? `https://bria-unisex-salon-server-1r2b.vercel.app/uploads/${img}` : '';
 
                 const updatedFields = { serviceName, serviceDescription, price, category, serviceType };
                 if (img) updatedFields.img = imgUrl;

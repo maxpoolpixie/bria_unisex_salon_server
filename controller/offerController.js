@@ -38,7 +38,7 @@ const offerController = {
             try {
                 const { offerName, startDate, endDate, usageLimit } = req.body;
                 const offerImg = req.file ? req.file.filename : '';
-                const offerImgUrl = req.file ? `http://localhost:8000/uploads/${offerImg}` : '';
+                const offerImgUrl = req.file ? `https://bria-unisex-salon-server-1r2b.vercel.app/uploads/${offerImg}` : '';
 
                 const newOffer = new Offer({
                     offerName,
@@ -106,7 +106,7 @@ const offerController = {
                 const { id } = req.params;
                 const { offerName, startDate, endDate, usageLimit, status } = req.body;
                 const offerImg = req.file ? req.file.filename : '';
-                const offerImgUrl = req.file ? `http://localhost:8000/uploads/${offerImg}` : '';
+                const offerImgUrl = req.file ? `https://bria-unisex-salon-server-1r2b.vercel.app/uploads/${offerImg}` : '';
 
                 const updatedFields = { offerName, startDate, endDate, usageLimit, status };
                 if (offerImg) updatedFields.offerImg = offerImgUrl;
