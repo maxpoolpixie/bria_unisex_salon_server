@@ -8,8 +8,8 @@ const path = require('path');
 const fetch = require('node-fetch');
 const cron = require('node-cron');
 const port = process.env.PORT || 8000;
-const db_name = process.env.DB_NAME;
-const password = process.env.DB_PASSWORD;
+// const db_name = process.env.DB_NAME;
+// const password = process.env.DB_PASSWORD;
 
 
 // middleware connection
