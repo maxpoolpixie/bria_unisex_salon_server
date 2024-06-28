@@ -44,7 +44,7 @@ const options = {
 };
 
 // Connect to MongoDB
-mongoose.connect(`mongodb+srv://${db_name}:${password}@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options);
+mongoose.connect(`mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvteA@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -57,7 +57,7 @@ db.once('open', function () {
 
 const connectWithRetry = () => {
     console.log('MongoDB connection with retry');
-    mongoose.connect(`mongodb+srv://${db_name}:${password}@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options).then(() => {
+    mongoose.connect(`mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvteA@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options).then(() => {
         console.log('MongoDB is connected');
     }).catch(err => {
         console.log('MongoDB connection unsuccessful, retry after 5 seconds.');
