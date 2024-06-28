@@ -123,11 +123,14 @@ const bookingController = {
     getParticularBooking: async (req, res) => {
         try {
             const { phoneNumber } = req.params;
-            const getParticularBooking = await Booking.findOne({ phoneNumber: phoneNumber });
-            if (!getParticularBooking) {
+            const a = await Booking.find();
+            const b = a.filter( item => item.phoneNumber == phoneNumber) 
+            const c = b.reverse();
+            const d = c[0]
+            if (!d) {
                 return res.json({ success: false, message: "booking data is missing in database" })
             }
-            res.json({ success: true, getParticularBooking })
+            res.json({ success: true, getParticularBooking:d })
         } catch (error) {
             res.json({ success: false })
         }
