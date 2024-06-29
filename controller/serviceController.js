@@ -4,23 +4,13 @@ const path = require('path');
 const Service = require('../model/serviceSchema');
 
 // Set up multer for file storage
-// const storage = multer.diskStorage({
-//     destination: './uploads/',
-//     filename: (req, file, cb) => {
-//         cb(null, `${Date.now()}-${file.originalname}`);
-//     }
-// });
-
-
-// Multer setup for file uploads
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './uploads/'); // Ensure 'uploads' directory exists and is writable
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
+    destination: './uploads/',
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
-  });
+});
+
 
 
 const upload = multer({
