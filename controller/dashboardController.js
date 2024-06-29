@@ -93,10 +93,7 @@ const dashboardController = {
                 
 
                 const findingParticularUser = allUser.find(user => user.phoneNumber == `+${phoneNumber}`)
-<<<<<<< HEAD
                 console.log(phoneNumber)
-=======
->>>>>>> cd72f0267786e0a9683f69ae49ca1fffc9975fca
                 const { isRepeat } = findingParticularUser;
                 bookingIterator.isRepeat = isRepeat;
 
