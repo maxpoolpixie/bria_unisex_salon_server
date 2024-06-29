@@ -91,7 +91,7 @@ const dashboardController = {
                 const { phoneNumber, name } = bookingIterator;
                 let graphObj = {};
 
-                const findingParticularUser = allUser.find(user => user.phoneNumber == phoneNumber)
+                const findingParticularUser = allUser.find(user => user.phoneNumber == `+${phoneNumber}`)
                 const { isRepeat } = findingParticularUser;
                 bookingIterator.isRepeat = isRepeat;
 
