@@ -209,7 +209,7 @@ const adminController = {
                         </html>
                         `
                     });
-                    res.json({ success: true, message: "Password updated" })
+                    return res.json({ success: true, message: "Password updated" })
                 }
             }
             res.json({ success: false, error: "something went wrong. Please try again", adminMail })
