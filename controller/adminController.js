@@ -212,7 +212,7 @@ const adminController = {
                     res.json({ success: true, message: "Password updated" })
                 }
             }
-            res.json({ success: false, error: "something went wrong. Please try again" })
+            res.json({ success: false, error: "something went wrong. Please try again", adminMail })
         } catch (error) {
             res.json({ success: false, error: "Something went wrong." })
         }
