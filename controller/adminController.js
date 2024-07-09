@@ -121,7 +121,7 @@ const adminController = {
             if (otp === resetOTP) {
                 return res.json({ success: true })
             }
-            return res.json({ success: false })
+            return res.json({ success: false, otp, resetOTP })
 
         } catch (error) {
             res.json({ success: false, error: "Something went wrong. Please try again" })
