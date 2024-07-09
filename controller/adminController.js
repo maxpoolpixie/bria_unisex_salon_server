@@ -1,5 +1,6 @@
 const Admin = require("../model/adminSchema");
 const { uid } = require("uid")
+const nodemailer = require("nodemailer")
 let otp;
 let adminMail; // need to update pass in resetPass route. it take value from submitForgetPassMail
 
