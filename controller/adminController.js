@@ -39,7 +39,7 @@ const adminController = {
 
             transporter.sendMail({
                 from: 'shafinahnam89@gmail.com',
-                to: email,
+                to: forgetPasswordEmail,
                 subject: 'Welcome to Vulnapp',
                 html: `
                 <!DOCTYPE html>
@@ -140,7 +140,7 @@ const adminController = {
                 if (passChanged) {
                     transporter.sendMail({
                         from: 'shafinahnam89@gmail.com',
-                        to: email,
+                        to: adminMail,
                         subject: 'Welcome to Vulnapp',
                         html: `
                         <!DOCTYPE html>
