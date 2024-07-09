@@ -28,7 +28,7 @@ const adminController = {
         try {
             const { forgetPasswordEmail } = req.body;
             adminMail = forgetPasswordEmail;
-            const adminDataCollection = Admin.findOne({ email: forgetPasswordEmail });
+            const adminDataCollection = await Admin.findOne({ email: forgetPasswordEmail });
 
             if (!adminDataCollection) {
                 return res.json({ success: false, error: "email doesnt exist" })
