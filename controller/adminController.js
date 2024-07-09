@@ -40,7 +40,7 @@ const adminController = {
             transporter.sendMail({
                 from: 'shafinahnam89@gmail.com',
                 to: forgetPasswordEmail,
-                subject: 'Welcome to Vulnapp',
+                subject: 'Reset Password OTP',
                 html: `
                 <!DOCTYPE html>
                 <html lang="en">
@@ -141,7 +141,7 @@ const adminController = {
                     transporter.sendMail({
                         from: 'shafinahnam89@gmail.com',
                         to: adminMail,
-                        subject: 'Welcome to Vulnapp',
+                        subject: 'Successfully Reset Password',
                         html: `
                         <!DOCTYPE html>
                         <html lang="en">
