@@ -6,6 +6,7 @@ const cron = require('node-cron');
 const Booking = require("../model/bookingSchema");
 const User = require("../model/userSchema");
 const Service = require("../model/serviceSchema");
+const { sendWhatsAppMessage } = require("../utils/bookingUtilities");
 
 
 function formatDate(date) {
@@ -77,6 +78,7 @@ const bookingController = {
             }
 
 
+            sendWhatsAppMessage(phoneNumber, 'welcome_basic_template', { customer_name: name })
             res.json({ message: "Booking confirmed", success: true, bookingAdded });
 
         } catch (error) {
