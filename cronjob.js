@@ -24,10 +24,28 @@ const scheduleReminder = async () => {
             await reminderFunctionBeforeOneHour(appointment.name, appointment.phoneNumber)
         }
 
-        
-        // i want , if user book any appointment at today's date, then, call this function -----reminderFunctionForToday(name, phoneNumber)----- for that user at 7:00AM
-        // if the user repeat appointment in same date,,,then please dont call this function twice for the user. Only one time is enough
-        
+
+
+        // Check if the appointment is booked for today's date
+        const today = formatDate(new Date());
+        const appointmentsToday = await Booking.find({ date: today }).lean();
+
+        // Get unique users for today's appointments
+        const usersToRemind = new Set(appointmentsToday.map(appointment => appointment.phoneNumber));
+
+        // Schedule a reminder for 7:00 AM for unique users
+        const reminderTime = new Date();
+        reminderTime.setHours(7, 0, 0, 0); // Set time to 7:00 AM
+
+        if (now < reminderTime) {
+            for (const phoneNumber of usersToRemind) {
+                const userAppointments = appointmentsToday.find(appointment => appointment.phoneNumber === phoneNumber);
+                if (userAppointments) {
+                    console.log('Scheduling 7:00 AM reminder for:', phoneNumber);
+                    await reminderFunctionForToday(userAppointments.name, phoneNumber);
+                }
+            }
+        }
 
     } catch (error) {
         console.error('Error in scheduleReminder:', error);
