@@ -6,7 +6,7 @@ const cron = require('node-cron');
 const Booking = require("../model/bookingSchema");
 const User = require("../model/userSchema");
 const Service = require("../model/serviceSchema");
-const { sendWhatsAppMessage } = require("../utils/bookingUtilities");
+const { confirmationMessage } = require("../utils/bookingUtilities");
 
 
 function formatDate(date) {
@@ -78,7 +78,7 @@ const bookingController = {
             }
 
 
-            sendWhatsAppMessage(phoneNumber, 'welcome_basic_template', { customer_name: name })
+            confirmationMessage(name, phoneNumber)
             res.json({ message: "Booking confirmed", success: true, bookingAdded });
 
         } catch (error) {
@@ -126,13 +126,13 @@ const bookingController = {
         try {
             const { phoneNumber } = req.params;
             const a = await Booking.find();
-            const b = a.filter( item => item.phoneNumber == phoneNumber) 
+            const b = a.filter(item => item.phoneNumber == phoneNumber)
             const c = b.reverse();
             const d = c[0]
             if (!d) {
                 return res.json({ success: false, message: "booking data is missing in database" })
             }
-            res.json({ success: true, getParticularBooking:d })
+            res.json({ success: true, getParticularBooking: d })
         } catch (error) {
             res.json({ success: false })
         }

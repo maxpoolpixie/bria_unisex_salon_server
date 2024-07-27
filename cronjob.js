@@ -18,11 +18,16 @@ const scheduleReminder = async () => {
         const regexTime = new RegExp(`^0?${hours}:${minutesAmPm}$`, 'i'); // Case insensitive match for AM/PM
 
         const appointments = await Booking.find({ date: date, time: { $regex: regexTime } }).lean();
-        console.log(appointments);
+
         for (const appointment of appointments) {
             console.log('Sending WhatsApp message to:', appointment.phoneNumber);
-            await sendWhatsAppMessage(appointment.phoneNumber, 'welcome_basic_template', { customer_name: appointment.name });
+            await reminderFunctionBeforeOneHour(appointment.name, appointment.phoneNumber)
         }
+
+        
+        // i want , if user book any appointment at today's date, then, call this function -----reminderFunctionForToday(name, phoneNumber)----- for that user at 7:00AM
+        // if the user repeat appointment in same date,,,then please dont call this function twice for the user. Only one time is enough
+        
 
     } catch (error) {
         console.error('Error in scheduleReminder:', error);
