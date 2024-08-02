@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const mongoose = require('mongoose');
 const Booking = require('./model/bookingSchema');
-const { sendWhatsAppMessage } = require('./utils/bookingUtilities');
+const { sendWhatsAppMessage, reminderFunctionBeforeOneHour, reminderFunctionForToday } = require('./utils/bookingUtilities');
 
 const scheduleReminder = async () => {
     try {
@@ -9,21 +9,23 @@ const scheduleReminder = async () => {
         const now = new Date();
         const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
-        console.log(formatDate(oneHourLater), formatTimeWithAmPm(oneHourLater));
+        console.log(formatDate(oneHourLater), formatTimeWithAmPm(oneHourLater).toLocaleLowerCase());
 
         const date = formatDate(oneHourLater);
         const time = formatTimeWithAmPm(oneHourLater);
         const [hours, rest] = time.split(':');
         const minutesAmPm = rest.trim();
-        const regexTime = new RegExp(`^0?${hours}:${minutesAmPm}$`, 'i'); // Case insensitive match for AM/PM
+        const regexTime = `${hours}:${minutesAmPm}`; // Case insensitive match for AM/PM
 
-        const appointments = await Booking.find({ date: date, time: { $regex: regexTime } }).lean();
+        console.log("This is date and time-----------------",date, regexTime.toLocaleLowerCase())
+        const appointments = await Booking.find({ date: date, time: regexTime.toLocaleLowerCase() });
+
+        console.log(appointments)
 
         for (const appointment of appointments) {
             console.log('Sending WhatsApp message to:', appointment.phoneNumber);
             await reminderFunctionBeforeOneHour(appointment.name, appointment.phoneNumber)
         }
-
 
 
         // Check if the appointment is booked for today's date

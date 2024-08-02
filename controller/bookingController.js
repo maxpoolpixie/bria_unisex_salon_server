@@ -33,6 +33,8 @@ const bookingController = {
                 return res.json({ message: "Please fill up all the fields" });
             }
 
+            console.log("This is date ----------------------------------------------", date)
+
             const confirmationCode = uid(6);
             const booking = new Booking({ name, phoneNumber: phoneNumber.slice(1), service, date, time, confirmationCode });
             const bookingAdded = await booking.save();

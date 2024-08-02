@@ -36,17 +36,17 @@ const confirmationMessage = async (name, phoneNumber) => {
                     "channelId": "66743aaae9db57dbcb217bef",
                     "channelType": "whatsapp",
                     "recipient": {
-                        "name": `${name}`,
-                        "phone": `${phoneNumber.substring(1)}`
+                        "name": "{{name}}",
+                        "phone": "{{phone}}"
                     },
                     "whatsapp": {
                         "type": "template",
                         "template": {
-                            "templateName": "appointment_booking_confirmation_hour",
+                            "templateName": "appointment_booking_confirmation",
                             "bodyValues": {
-                                "Name": `${name}`,
-                                "Date": `${formattedDate}`,
-                                "Time": `${strTime}`
+                                "Name": name,
+                                "Date": formattedDate,
+                                "Time": strTime
                             }
                         }
                     }
@@ -79,7 +79,7 @@ const reminderFunctionForToday = async (name, phoneNumber) => {
                     "channelType": "whatsapp",
                     "recipient": {
                         "name": `${name}`,
-                        "phone": `${phoneNumber.substring(1)}`
+                        "phone": `${phoneNumber}`
                     },
                     "whatsapp": {
                         "type": "template",
@@ -133,7 +133,7 @@ const reminderFunctionBeforeOneHour = async (name, phoneNumber) => {
                     "channelType": "whatsapp",
                     "recipient": {
                         "name": `${name}`,
-                        "phone": `${phoneNumber.substring(1)}`
+                        "phone": `${phoneNumber}`
                     },
                     "whatsapp": {
                         "type": "template",
@@ -156,6 +156,7 @@ const reminderFunctionBeforeOneHour = async (name, phoneNumber) => {
         console.error('Error sending message:', error);
     }
 };
+
 
 
 
