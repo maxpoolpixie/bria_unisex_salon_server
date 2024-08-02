@@ -32,11 +32,12 @@ const bookingController = {
             if (!(name && phoneNumber && service && date && time)) {
                 return res.json({ message: "Please fill up all the fields" });
             }
+            const bookingTimeSlice = time[0] == 0 ? time.substring(1) : time;
 
             console.log("This is date ----------------------------------------------", date)
 
             const confirmationCode = uid(6);
-            const booking = new Booking({ name, phoneNumber: phoneNumber.slice(1), service, date, time, confirmationCode });
+            const booking = new Booking({ name, phoneNumber: phoneNumber.slice(1), service, date, time: bookingTimeSlice, confirmationCode });
             const bookingAdded = await booking.save();
 
             if (!bookingAdded) {
