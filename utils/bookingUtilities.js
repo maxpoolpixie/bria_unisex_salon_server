@@ -6,12 +6,14 @@ const confirmationMessage = async (name, phoneNumber) => {
     try {
         // initialize Date
         const date = new Date();
+        console.log("keep trying------------------------------------------------------")
 
         // Formatting the date
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
         const year = date.getFullYear();
         const formattedDate = `${day}-${month}-${year}`;
+
 
         // Formatting the time
         let hours = date.getHours();
@@ -20,6 +22,7 @@ const confirmationMessage = async (name, phoneNumber) => {
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
         const strTime = `${hours}:${minutes} ${ampm}`;
+
 
         const response = await fetch("https://server.gallabox.com/devapi/messages/whatsapp", {
             method: 'POST',
@@ -34,7 +37,7 @@ const confirmationMessage = async (name, phoneNumber) => {
                     "channelType": "whatsapp",
                     "recipient": {
                         "name": `${name}`,
-                        "phone": `${phoneNumber}`
+                        "phone": `${phoneNumber.substring(1)}`
                     },
                     "whatsapp": {
                         "type": "template",
@@ -52,7 +55,7 @@ const confirmationMessage = async (name, phoneNumber) => {
         });
 
         const data = await response.json();
-        console.log('Message sent:', data);
+        console.log('Message sent: ---------------------------------------------', data);
 
     } catch (error) {
         res.json({ success: false, error })
@@ -76,7 +79,7 @@ const reminderFunctionForToday = async (name, phoneNumber) => {
                     "channelType": "whatsapp",
                     "recipient": {
                         "name": `${name}`,
-                        "phone": `${phoneNumber}`
+                        "phone": `${phoneNumber.substring(1)}`
                     },
                     "whatsapp": {
                         "type": "template",
@@ -130,7 +133,7 @@ const reminderFunctionBeforeOneHour = async (name, phoneNumber) => {
                     "channelType": "whatsapp",
                     "recipient": {
                         "name": `${name}`,
-                        "phone": `${phoneNumber}`
+                        "phone": `${phoneNumber.substring(1)}`
                     },
                     "whatsapp": {
                         "type": "template",
@@ -156,4 +159,4 @@ const reminderFunctionBeforeOneHour = async (name, phoneNumber) => {
 
 
 
-module.exports = {  confirmationMessage, reminderFunctionForToday, reminderFunctionBeforeOneHour }
+module.exports = { confirmationMessage, reminderFunctionForToday, reminderFunctionBeforeOneHour }
