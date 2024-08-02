@@ -17,7 +17,7 @@ const scheduleReminder = async () => {
         const minutesAmPm = rest.trim();
         const regexTime = `${hours}:${minutesAmPm}`; // Case insensitive match for AM/PM
 
-        console.log("This is date and time-----------------",date, regexTime.toLocaleLowerCase())
+        console.log("This is date and time-----------------", date, regexTime.toLocaleLowerCase())
         const appointments = await Booking.find({ date: date, time: regexTime.toLocaleLowerCase() });
 
         console.log(appointments)
@@ -54,8 +54,8 @@ const scheduleReminder = async () => {
     }
 };
 
-// Schedule the cron job to run every minute
-cron.schedule('* * * * *', scheduleReminder);
+// Schedule the cron job to run at 7:00 AM every day
+cron.schedule('0 7 * * *', scheduleReminder);
 
 function formatDate(date) {
     const day = String(date.getDate()).padStart(2, '0');
