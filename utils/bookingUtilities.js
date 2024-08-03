@@ -37,7 +37,7 @@ const confirmationMessage = async (name, phoneNumber) => {
                     "channelType": "whatsapp",
                     "recipient": {
                         "name": name,
-                        "phone": phoneNumber
+                        "phone": phoneNumber.substring(1)
                     },
                     "whatsapp": {
                         "type": "template",
