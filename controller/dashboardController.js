@@ -8,7 +8,9 @@ const convertToDate = require("../utils/dashboardUtilities");
 const dashboardController = {
 
     getDashboardData: async (req, res) => {
+        
         try {
+            
             const allService = await Service.find();
             const allBookings = await Booking.find();
 
@@ -81,29 +83,33 @@ const dashboardController = {
     },
     getGraphData: async (req, res) => {
         try {
+            
             const allUser = await User.find();
             const allBooking = await Booking.find();
 
             let graphData = [];
 
-
+            
             for (const bookingIterator of allBooking) {
                 const { phoneNumber, name } = bookingIterator;
                 let graphObj = {};
                 
 
                 const findingParticularUser = allUser.find(user => user.phoneNumber == `+${phoneNumber}`)
-                console.log(phoneNumber)
+            
                 const { isRepeat } = findingParticularUser;
+            
                 bookingIterator.isRepeat = isRepeat;
-
+                
                 graphObj.isRepeat = isRepeat;
                 graphObj.date = bookingIterator.date;
-                graphObj.time = bookingIterator.time;
+                graphObj.time = bookingIterator.time.toUpperCase();
 
                 graphData.push(graphObj)
+            
 
             }
+        
             res.json(graphData)
         } catch (error) {
             res.json({ success: false, message: "something went wrong", error })
