@@ -3,58 +3,7 @@ const mongoose = require('mongoose');
 const Booking = require('./model/bookingSchema');
 const { reminderFunctionBeforeOneHour, reminderFunctionForToday } = require('./utils/bookingUtilities');
 
-// const scheduleReminder = async () => {
-//     try {
-//         console.log('Cron job started at:', new Date().toISOString());
-//         const now = new Date();
-//         const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
-
-//         console.log(formatDate(oneHourLater), formatTimeWithAmPm(oneHourLater).toLocaleLowerCase());
-
-//         const date = formatDate(oneHourLater);
-//         const time = formatTimeWithAmPm(oneHourLater);
-//         const [hours, rest] = time.split(':');
-//         const minutesAmPm = rest.trim();
-//         const regexTime = `${hours}:${minutesAmPm}`; // Case insensitive match for AM/PM
-
-//         console.log("This is date and time-----------------", date, regexTime.toLocaleLowerCase())
-//         const appointments = await Booking.find({ date: date, time: regexTime.toLocaleLowerCase() });
-
-//         console.log(appointments)
-
-//         for (const appointment of appointments) {
-//             console.log('Sending WhatsApp message to:', appointment.phoneNumber);
-//             await reminderFunctionBeforeOneHour(appointment.name, appointment.phoneNumber)
-//         }
-
-
-//         // Check if the appointment is booked for today's date
-//         const today = formatDate(new Date());
-//         const appointmentsToday = await Booking.find({ date: today });
-
-//         // Get unique users for today's appointments
-//         const usersToRemind = new Set(appointmentsToday.map(appointment => appointment.phoneNumber));
-
-//         // Schedule a reminder for 7:00 AM for unique users
-//         // here i want, if the booking is today, then send message at 7:00am only for one time.
-//         const reminderTime = new Date();
-//         reminderTime.setHours(7, 0, 0, 0); // Set time to 7:00 AM
-
-//         if (now < reminderTime) {
-//             for (const phoneNumber of usersToRemind) {
-//                 const userAppointments = appointmentsToday.find(appointment => appointment.phoneNumber === phoneNumber);
-//                 if (userAppointments) {
-//                     console.log('Scheduling 7:00 AM reminder for:', phoneNumber);
-//                     await reminderFunctionForToday(userAppointments.name, phoneNumber);
-//                 }
-//             }
-//         }
-
-//     } catch (error) {
-//         console.error('Error in scheduleReminder:', error);
-//     }
-// };
-
+let lastReminderDate = null; // Variable to store the last sent reminder date
 
 const scheduleReminder = async () => {
     try {
@@ -91,7 +40,8 @@ const scheduleReminder = async () => {
         const reminderTime = new Date();
         reminderTime.setHours(7, 0, 0, 0); // Set time to 7:00 AM
 
-        if (now < reminderTime) {
+        // Check if the reminder for 7:00 AM has already been sent today
+        if (now < reminderTime && lastReminderDate !== today) {
             for (const phoneNumber of usersToRemind) {
                 const userAppointments = appointmentsToday.find(appointment => appointment.phoneNumber === phoneNumber);
                 if (userAppointments) {
@@ -99,13 +49,14 @@ const scheduleReminder = async () => {
                     await reminderFunctionForToday(userAppointments.name, phoneNumber);
                 }
             }
+            // Update the last sent reminder date
+            lastReminderDate = today;
         }
 
     } catch (error) {
         console.error('Error in scheduleReminder:', error);
     }
 };
-
 
 // Schedule the cron job to run at 7:00 AM every day
 cron.schedule('0 7 * * *', scheduleReminder);
