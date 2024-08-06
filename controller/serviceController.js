@@ -1,3 +1,155 @@
+// const express = require('express');
+// const multer = require('multer');
+// const path = require('path');
+// const Service = require('../model/serviceSchema');
+
+// // Set up multer for file storage
+// const storage = multer.diskStorage({
+//     destination: './uploads/',
+//     filename: (req, file, cb) => {
+//         cb(null, `${Date.now()}-${file.originalname}`);
+//     }
+// });
+
+
+
+// const upload = multer({
+//     storage: storage,
+//     limits: { fileSize: 1000000 }, // Limit file size to 1MB
+//     fileFilter: (req, file, cb) => {
+//         const filetypes = /jpeg|jpg|png|gif/;
+//         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+//         const mimetype = filetypes.test(file.mimetype);
+
+//         if (mimetype && extname) {
+//             return cb(null, true);
+//         } else {
+//             cb('Error: Images Only!');
+//         }
+//     }
+// }).single('img');
+
+
+
+// const serviceController = {
+//     addService: async (req, res) => {
+//         upload(req, res, async (err) => {
+//             if (err) {
+//                 return res.json({ errorMessage: err });
+//             }
+//             try {
+//                 const { serviceName, serviceDescription, price, category, serviceType } = req.body;
+//                 const img = req.file ? req.file.filename : '';
+//                 const imgUrl = req.file ? `https://bria-unisex-salon-server.onrender.com/uploads/${img}` : '';
+
+//                 const newService = new Service({
+//                     serviceName,
+//                     serviceDescription,
+//                     img: imgUrl,
+//                     price,
+//                     category,
+//                     serviceType
+//                 });
+
+//                 const addedNewService = await newService.save();
+
+//                 if (!addedNewService) {
+//                     return res.json({ errorMessage: "Something went wrong" });
+//                 }
+//                 res.json({ message: "Service added", success: true });
+//             } catch (error) {
+//                 res.json({ errorMessage: "Something went wrong", error });
+//             }
+//         });
+//     },
+//     getAllService: async (req, res) => {
+//         try {
+//             const page = parseInt(req.query.page) || 1;
+//             const limit = parseInt(req.query.limit) || 10;
+//             const skip = (page - 1) * limit;
+
+//             const allTheServices = await Service.find()
+//                 .skip(skip)
+//                 .limit(limit);
+
+//             const totalServices = await Service.countDocuments();
+
+//             res.json({
+//                 totalPages: Math.ceil(totalServices / limit),
+//                 currentPage: page,
+//                 services: allTheServices
+//             });
+//         } catch (error) {
+//             res.json({ errorMessage: "Something went wrong", error });
+//         }
+//     },
+//     getTopServices: async (req, res) => {
+//         try {
+//             const topServices = await Service.find().sort({ bookingCount: -1 });
+//             res.json(topServices);
+//         } catch (error) {
+//             res.json({ errorMessage: "Something went wrong", error });
+//         }
+//     },
+//     deleteService: async (req, res) => {
+//         try {
+//             const { id } = req.params;
+//             const deleted = await Service.deleteOne({ _id: id });
+//             if (!deleted) {
+//                 return res.json({ errorMessage: "Something went wrong. Please try again" });
+//             }
+//             res.json({ message: "Deleted" });
+//         } catch (error) {
+//             res.json({ errorMessage: "Something went wrong. Try again", error });
+//         }
+//     },
+//     getParticularServiceById: async (req, res) => {
+//         try {
+//             const { id } = req.params;
+//             const serviceDetails = await Service.findById(id);
+//             if (!serviceDetails) {
+//                 return res.json({ message: "Service is missing" });
+//             }
+//             res.json(serviceDetails);
+//         } catch (error) {
+//             res.json({ errorMessage: "Something went wrong", error });
+//         }
+//     },
+//     editService: async (req, res) => {
+//         upload(req, res, async (err) => {
+//             if (err) {
+//                 return res.json({ errorMessage: err });
+//             }
+//             try {
+//                 const { id } = req.params;
+//                 const { serviceName, serviceDescription, price, category, serviceType } = req.body;
+//                 const img = req.file ? req.file.filename : '';
+//                 const imgUrl = req.file ? `https://bria-unisex-salon-server.onrender.com/uploads/${img}` : '';
+
+//                 const updatedFields = { serviceName, serviceDescription, price, category, serviceType };
+//                 if (img) updatedFields.img = imgUrl;
+
+//                 const edited = await Service.findByIdAndUpdate(id, updatedFields, { new: true });
+
+//                 if (!edited) {
+//                     return res.json({ message: "Something went wrong" });
+//                 }
+//                 res.json({ message: "Edited", success: true });
+//             } catch (error) {
+//                 res.json({ errorMessage: "Something went wrong", error });
+//             }
+//         });
+//     }
+// };
+
+// module.exports = serviceController;
+
+
+
+
+
+
+
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -10,8 +162,6 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
-
-
 
 const upload = multer({
     storage: storage,
@@ -28,8 +178,6 @@ const upload = multer({
         }
     }
 }).single('img');
-
-
 
 const serviceController = {
     addService: async (req, res) => {
@@ -70,7 +218,8 @@ const serviceController = {
 
             const allTheServices = await Service.find()
                 .skip(skip)
-                .limit(limit);
+                .limit(limit)
+                .lean();
 
             const totalServices = await Service.countDocuments();
 
@@ -85,7 +234,7 @@ const serviceController = {
     },
     getTopServices: async (req, res) => {
         try {
-            const topServices = await Service.find().sort({ bookingCount: -1 });
+            const topServices = await Service.find().sort({ bookingCount: -1 }).lean();
             res.json(topServices);
         } catch (error) {
             res.json({ errorMessage: "Something went wrong", error });
@@ -95,7 +244,7 @@ const serviceController = {
         try {
             const { id } = req.params;
             const deleted = await Service.deleteOne({ _id: id });
-            if (!deleted) {
+            if (!deleted.deletedCount) {
                 return res.json({ errorMessage: "Something went wrong. Please try again" });
             }
             res.json({ message: "Deleted" });
@@ -106,7 +255,7 @@ const serviceController = {
     getParticularServiceById: async (req, res) => {
         try {
             const { id } = req.params;
-            const serviceDetails = await Service.findById(id);
+            const serviceDetails = await Service.findById(id).lean();
             if (!serviceDetails) {
                 return res.json({ message: "Service is missing" });
             }
@@ -129,7 +278,7 @@ const serviceController = {
                 const updatedFields = { serviceName, serviceDescription, price, category, serviceType };
                 if (img) updatedFields.img = imgUrl;
 
-                const edited = await Service.findByIdAndUpdate(id, updatedFields, { new: true });
+                const edited = await Service.findByIdAndUpdate(id, updatedFields, { new: true }).lean();
 
                 if (!edited) {
                     return res.json({ message: "Something went wrong" });
