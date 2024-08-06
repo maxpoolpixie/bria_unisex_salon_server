@@ -18,13 +18,17 @@ const serviceSchema = mongoose.Schema({
     },
     bookingCount: {
         type: Number,
-        default:0
+        default: 0
     },
     serviceType: {
         type: String
     }
-})
+});
 
-const Service = new mongoose.model("Service", serviceSchema)
+// Adding indexes
+serviceSchema.index({ category: 1 });
+serviceSchema.index({ bookingCount: -1 });
+
+const Service = mongoose.model("Service", serviceSchema);
 
 module.exports = Service;
