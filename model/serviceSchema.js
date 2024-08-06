@@ -26,8 +26,8 @@ const serviceSchema = mongoose.Schema({
 });
 
 // Adding indexes
-serviceSchema.index({ category: 1 });
-serviceSchema.index({ bookingCount: -1 });
+// serviceSchema.index({ category: 1 });
+// serviceSchema.index({ bookingCount: -1 });
 
 const Service = mongoose.model("Service", serviceSchema);
 
