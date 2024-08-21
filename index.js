@@ -34,7 +34,7 @@ app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-const {scheduleReminder} = require("./cronjob");
+const { scheduleReminder } = require("./cronjob");
 
 const options = {
     useNewUrlParser: true,
@@ -43,8 +43,11 @@ const options = {
     socketTimeoutMS: 60000,        // Increase this to a higher value
 };
 
+
+const mongodbConnectingString = `mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvteA@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`
+
 // Connect to MongoDB
-mongoose.connect(`mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvteA@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`, options);
+mongoose.connect( `mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false` , options);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
