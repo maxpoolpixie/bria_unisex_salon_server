@@ -47,7 +47,14 @@ const options = {
 const mongodbConnectingString = `mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvteA@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`
 
 // Connect to MongoDB
-mongoose.connect( `mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false` , options);
+mongoose.connect(`mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+    replicaSet: 'rs0',
+    readPreference: 'secondaryPreferred',
+    retryWrites: false,
+});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
