@@ -11,10 +11,10 @@ const port = process.env.PORT || 8000;
 // const db_name = process.env.DB_NAME;
 // const password = process.env.DB_PASSWORD;
 const fs = require('fs');
-const path = require('path');
+
 
 const sslOptions = {
-    sslCA: fs.readFileSync(path.join(__dirname, 'certs/global-bundle.pem')),
+    sslCA: fs.readFileSync(path.join(__dirname, 'global-bundle.pem')),
 };
 
 // middleware connection
@@ -55,11 +55,13 @@ const mongodbConnectingString = `mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvte
 mongoose.connect(`mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    ssl: true,
-    sslCA: sslOptions.sslCA,
+    tls: true,
+    tlsCAFile: path.join(__dirname, 'global-bundle.pem'),
     replicaSet: 'rs0',
     readPreference: 'secondaryPreferred',
     retryWrites: false,
+    serverSelectionTimeoutMS: 60000, // Increase this to a higher value
+    socketTimeoutMS: 60000,        // Increase this to a higher value
 });
 
 const db = mongoose.connection;
@@ -76,11 +78,13 @@ const connectWithRetry = () => {
     mongoose.connect(`mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        ssl: true,
-        sslCA: sslOptions.sslCA,
+        tls: true,
+        tlsCAFile: path.join(__dirname, 'global-bundle.pem'),
         replicaSet: 'rs0',
         readPreference: 'secondaryPreferred',
         retryWrites: false,
+        serverSelectionTimeoutMS: 60000, // Increase this to a higher value
+        socketTimeoutMS: 60000,        // Increase this to a higher value
     }).then(() => {
         console.log('MongoDB is connected');
     }).catch(err => {
