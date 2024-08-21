@@ -10,7 +10,12 @@ const cron = require('node-cron');
 const port = process.env.PORT || 8000;
 // const db_name = process.env.DB_NAME;
 // const password = process.env.DB_PASSWORD;
+const fs = require('fs');
+const path = require('path');
 
+const sslOptions = {
+    sslCA: fs.readFileSync(path.join(__dirname, 'certs/global-bundle.pem')),
+};
 
 // middleware connection
 // Configure CORS
@@ -51,6 +56,7 @@ mongoose.connect(`mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.c
     useNewUrlParser: true,
     useUnifiedTopology: true,
     ssl: true,
+    sslCA: sslOptions.sslCA,
     replicaSet: 'rs0',
     readPreference: 'secondaryPreferred',
     retryWrites: false,
@@ -71,6 +77,7 @@ const connectWithRetry = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         ssl: true,
+        sslCA: sslOptions.sslCA,
         replicaSet: 'rs0',
         readPreference: 'secondaryPreferred',
         retryWrites: false,
