@@ -41,6 +41,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const { scheduleReminder } = require("./cronjob");
 
+
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -52,7 +53,7 @@ const options = {
 const mongodbConnectingString = `mongodb+srv://bria_unisex_salon:3Y5x3CEO3HYFvteA@cluster0.6oyupqe.mongodb.net/bria_unisex_salon`
 
 // Connect to MongoDB
-mongoose.connect(`mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
+mongoose.connect(`mongodb://bria:12345678@bria.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     tls: true,
@@ -75,7 +76,7 @@ db.once('open', function () {
 
 const connectWithRetry = () => {
     console.log('MongoDB connection with retry');
-    mongoose.connect(`mongodb://briaUnisexSalon:12345678@docdb-2024-08-21-18-33-48.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
+    mongoose.connect(`mongodb://bria:12345678@bria.cluster-cj8kwaosypww.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         tls: true,
