@@ -11,9 +11,10 @@ const fs = require('fs');
 const port = process.env.PORT || 8000;
 
 
+// SSL options
 const option = {
-    key: fs.readFileSync('/server.key'),
-    cert: fs.readFileSync('/server.crt')
+    key: fs.readFileSync(path.join(__dirname, 'server.key')), // Adjusted path
+    cert: fs.readFileSync(path.join(__dirname, 'server.crt')) // Adjusted path
 };
 
 
