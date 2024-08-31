@@ -7,7 +7,7 @@ const app = express();
 const path = require('path');
 const cron = require('node-cron');
 const fs = require('fs');
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 8000;
 
 // Load SSL certificate
 const sslCA = fs.readFileSync(path.join(__dirname, 'global-bundle.pem'));
