@@ -9,6 +9,13 @@ const cron = require('node-cron');
 const fs = require('fs');
 const port = process.env.PORT || 8000;
 
+
+const option = {
+    key: fs.readFileSync('/server.key'),
+    cert: fs.readFileSync('/server.crt')
+};
+
+
 // Load SSL certificate
 const sslCA = fs.readFileSync(path.join(__dirname, 'global-bundle.pem'));
 
@@ -107,6 +114,9 @@ app.use(function (err, req, res, next) {
 });
 
 // Start server
-app.listen(port, function () {
-    console.log(`CORS-enabled web server listening on port ${port}`);
+// app.listen(port, function () {
+//     console.log(`CORS-enabled web server listening on port ${port}`);
+// });
+https.createServer(option, app).listen(port, () => {
+    console.log(`Server is running on https://localhost:${port}`);
 });
