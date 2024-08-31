@@ -13,8 +13,8 @@ const port = process.env.PORT || 8000;
 
 // SSL options
 const option = {
-    key: fs.readFileSync(path.join(__dirname, 'server.key')), // Adjusted path
-    cert: fs.readFileSync(path.join(__dirname, 'server.crt')) // Adjusted path
+    key: fs.readFileSync(path.join(__dirname, 'server.key')),
+    cert: fs.readFileSync(path.join(__dirname, 'server.crt'))
 };
 
 
@@ -39,11 +39,11 @@ const options = {
 
 // Connect to MongoDB with retry logic
 const connectWithRetry = () => {
-    console.log('MongoDB connection with retry');
+    // console.log('MongoDB connection with retry');
     mongoose.connect(mongodbConnectionString, options).then(() => {
-        console.log('MongoDB is connected');
+        // console.log('MongoDB is connected');
     }).catch(err => {
-        console.log('MongoDB connection unsuccessful, retry after 5 seconds. Error:', err);
+        // console.log('MongoDB connection unsuccessful, retry after 5 seconds. Error:', err);
         setTimeout(connectWithRetry, 5000);
     });
 };
@@ -63,7 +63,7 @@ db.once('open', function () {
 // CORS options
 const corsOptions = {
     origin: function (origin, callback) {
-        console.log('Origin:', origin); // Log the origin for debugging
+        // console.log('Origin:', origin); // Log the origin for debugging
         callback(null, true); // Allow all origins
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -111,14 +111,14 @@ app.get("/", async (req, res) => {
 
 // Error handling middleware
 app.use(function (err, req, res, next) {
-    console.error(err.stack); // Log the error stack
+    // console.error(err.stack); // Log the error stack
     res.status(500).json({ error: 'Something went wrong!', details: err.message });
 });
 
 // Start server
-// app.listen(port, function () {
-//     console.log(`CORS-enabled web server listening on port ${port}`);
-// });
-https.createServer(option, app).listen(port, () => {
-    console.log(`Server is running on https://localhost:${port}`);
+app.listen(port, function () {
+    console.log(`CORS-enabled web server listening on port ${port}`);
 });
+// https.createServer(option, app).listen(port, () => {
+//     console.log(`Server is running on https://localhost:${port}`);
+// });
